@@ -11,6 +11,7 @@ use str
 use github.com/zzamboni/elvish-modules/1pass
 use github.com/zzamboni/elvish-modules/leanpub
 
+# You can set the below by hand if you don't use 1Password
 set leanpub:api-key-fn = { str:trim-space (1pass:get-item leanpub &fields=["API key"]) }
 
 fn github-repo-slug {|dir|
