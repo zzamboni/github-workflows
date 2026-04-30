@@ -2,6 +2,9 @@ name: "Leanpub Build"
 
 "on":
   workflow_call:
+    secrets:
+      LEANPUB_API_KEY:
+        required: true
 
 jobs:
   leanpub:
