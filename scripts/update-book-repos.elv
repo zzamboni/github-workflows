@@ -7,12 +7,19 @@
 # - Set repo secret LEANPUB_API_KEY
 
 use os
+use path
 use str
 use github.com/zzamboni/elvish-modules/1pass
 use github.com/zzamboni/elvish-modules/leanpub
 
 # You can set the below by hand if you don't use 1Password
 set leanpub:api-key-fn = { str:trim-space (1pass:get-item leanpub &fields=["API key"]) }
+var script-dir = (path:dir (src)[name])
+var workflow-template = (path:join $script-dir .. workflow-files leanpub.yml)
+
+if (not (os:is-regular $workflow-template)) {
+  fail "Workflow template not found: "$workflow-template
+}
 
 fn github-repo-slug {|dir|
   try {
@@ -42,7 +49,7 @@ each { |d|
     echo "#### " $d
     echo "   Copying workflow file"
     mkdir -p $d/.github/workflows
-    cp github-workflows/workflow-files/leanpub.yml $d/.github/workflows
+    cp $workflow-template $d/.github/workflows/leanpub.yml
     echo "   Setting secret for "$slug
     gh secret set LEANPUB_API_KEY --body (leanpub:api-key) --repo $slug
   }
