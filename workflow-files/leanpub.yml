@@ -1,0 +1,12 @@
+name: "Leanpub Build"
+
+on:
+  push:
+    branches: ["main", "master"]
+    tags: ["preview*", "publish*", "silent-publish*"]
+
+jobs:
+  leanpub:
+    uses: zzamboni/github-workflows/.github/workflows/leanpub.yml@main
+    secrets:
+      LEANPUB_API_KEY: ${{ secrets.LEANPUB_API_KEY }}
